@@ -1,0 +1,10 @@
+extends layout/page
+
+block append head
+    link(href=require('./styles.scss'), rel='stylesheet')
+
+block append main
+    section.section
+
+block append scripts
+    script(src=require('./main.ts'))

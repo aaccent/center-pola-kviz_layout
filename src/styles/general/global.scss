@@ -1,0 +1,59 @@
+@use 'styles/utils';
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+    font-size: 62.5%;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 0 15px;
+    max-width: 1230px;
+}
+
+.main-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.main {
+    flex: 1 1 0;
+}
+
+.hidden {
+    display: none;
+}
+
+body {
+    overflow-x: clip;
+}
+
+html.disable-scroll {
+    overflow: clip;
+
+    body {
+        overflow: clip;
+    }
+}
+
+.swiper,
+.swiper-wrapper,
+.swiper-slide {
+    box-sizing: border-box !important;
+}
+
+.content {
+    p + p {
+        margin-top: 15px;
+    }
+
+    @media only screen and (max-width: utils.$tablet1200) {
+        p + p {
+            margin-top: 12px;
+        }
+    }
+}
