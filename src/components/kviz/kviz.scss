@@ -1,0 +1,352 @@
+@use 'styles/utils';
+
+body {
+    margin: 0;
+}
+html:has(.kviz__content._active) {
+    font-size: 62.5%;
+}
+.kviz {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: hsl(0, 0%, 13%);
+    font-family: 'Inter', sans-serif;
+    background-color: hsl(0, 0%, 0%, 0.5);
+
+    &__inner {
+        padding: 40px 50px 50px;
+        width: 47%;
+        height: 646px;
+        background-color: hsl(0, 0%, 97%);
+        border-radius: 12px;
+    }
+
+    &__title {
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        color: hsl(0, 0%, 13%);
+        font-size: 4.2rem;
+        font-weight: 500;
+        line-height: 52px;
+    }
+
+    &__close {
+        margin-left: auto;
+        @include utils.square(25px);
+        position: relative;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            opacity: 0.5;
+            background-color: #222222;
+        }
+
+        &:before {
+            rotate: 45deg;
+        }
+        &:after {
+            rotate: -45deg;
+        }
+    }
+
+    &__container {
+        position: relative;
+        width: 100%;
+        height: 85%;
+        background-color: white;
+        border-radius: 12px;
+
+        &:has(.kviz__content._active input:checked) {
+            .kviz__next {
+                opacity: 1;
+            }
+        }
+
+        &:has(.kviz__content[data-slide-id='1']._active) {
+            .kviz__prev {
+                display: none;
+            }
+        }
+
+        &:has(.kviz__form._active) {
+            .kviz__next {
+                display: none;
+            }
+
+            .kviz__submit {
+                display: flex;
+            }
+        }
+    }
+
+    &__content {
+        inset: 0;
+        position: absolute;
+        padding: 32px;
+        display: flex;
+        justify-content: space-between;
+        opacity: 0;
+        visibility: hidden;
+
+        &._active {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    &__question {
+        margin-bottom: 32px;
+        font-size: 2rem;
+        font-weight: 500;
+
+        &-block {
+            width: 100%;
+            max-width: 360px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__variants {
+        gap: 15px;
+        display: flex;
+        flex-direction: column;
+        color: hsla(0, 0%, 0%, 0.5);
+        font-size: 1.5rem;
+        font-weight: 500;
+
+        &-item {
+            gap: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            &::before {
+                aspect-ratio: 1;
+                content: '';
+                width: 24px;
+                min-width: 24px;
+                box-sizing: border-box;
+                border-radius: 6px;
+                border: 1px solid hsl(0, 0%, 70%);
+            }
+
+            input {
+                position: absolute;
+                opacity: 0;
+                visibility: hidden;
+            }
+
+            &:hover {
+                color: hsl(0, 0%, 13%);
+
+                &::before {
+                    border-color: hsl(0, 0%, 13%);
+                }
+            }
+
+            &:has(input:checked) {
+                color: hsl(0, 0%, 13%);
+
+                &::before {
+                    background-color: hsl(4, 87%, 63%);
+                    border: none;
+                    @include utils.bg-defaults(auto);
+                    background-image: url('assets/icons/checkmark.svg');
+                }
+            }
+
+            &:has(input[type='radio']) {
+                &::before {
+                    border-radius: 50px;
+                }
+            }
+        }
+    }
+
+    &__buttons {
+        gap: 10px;
+        position: absolute;
+        bottom: 32px;
+        left: 32px;
+        width: fit-content;
+        display: flex;
+    }
+
+    &__next,
+    &__prev,
+    &__submit {
+        padding: 14px 16px;
+        width: 180px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.6rem;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 8px;
+        border: none;
+    }
+
+    &__next {
+        color: white;
+        opacity: 0.5;
+        background-color: hsl(4, 87%, 63%);
+    }
+
+    &__prev {
+        justify-content: center;
+        color: #f35c50;
+        background-color: hsl(4, 80%, 96%);
+    }
+
+    &__submit {
+        display: none;
+        justify-content: center;
+        color: white;
+        background-color: hsl(4, 87%, 63%);
+    }
+
+    &__image {
+        object-fit: cover;
+        object-position: center;
+        inset: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        border-radius: 10px;
+
+        &[data-image-id] {
+            opacity: 0;
+            visibility: hidden;
+
+            &._active {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        &-block {
+            position: relative;
+            width: 354px;
+        }
+    }
+
+    &__form {
+        &-title {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        &-text {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 500;
+            opacity: 0.6;
+        }
+
+        &-data {
+            gap: 12px;
+            display: flex;
+            flex-direction: column;
+            opacity: 0.6;
+        }
+
+        &-input {
+            gap: 6px;
+            display: flex;
+            flex-direction: column;
+            font-size: 1.2rem;
+            font-weight: 400;
+
+            input {
+                padding: 12px 10px 12px 12px;
+                font-size: 1.5rem;
+                opacity: 1;
+                border-radius: 8px;
+                border-color: #b2b2b2;
+                outline: none;
+            }
+        }
+    }
+
+    &-thanks {
+        display: none;
+        overflow: hidden;
+        border-radius: 8px;
+    }
+
+    &:has(.kviz-thanks._active) {
+        .kviz-thanks {
+            display: block;
+        }
+
+        .kviz__inner {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: utils.$tablet1000) {
+    .kviz {
+        &__inner {
+            padding: 15px;
+            width: 85%;
+        }
+
+        &__title {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        &__container {
+            width: 100%;
+            height: 90%;
+        }
+
+        &__content {
+            gap: 20px;
+            padding: 16px;
+            flex-direction: column;
+            justify-content: start;
+        }
+
+        &__question-block {
+            max-width: 100%;
+        }
+
+        &__image-block {
+            width: 100%;
+            max-width: 400px;
+            height: 150px;
+        }
+
+        &__buttons {
+            right: 20px;
+            bottom: 20px;
+            left: 20px;
+
+            button {
+                width: 145px;
+            }
+        }
+    }
+}

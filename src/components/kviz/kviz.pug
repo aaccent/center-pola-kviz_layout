@@ -1,0 +1,81 @@
+include layout/utils
+-
+    var content = [
+        {
+            id: '1',
+            multiple: true,
+            question: 'Какой тип напольного покрытия вас интересует? ',
+            variants: [
+                { text: 'Ламинат' },
+                { text: 'Паркет' },
+                { text: 'Инженерная доска' },
+                { text: 'Кварцвинил' },
+                { text: 'Ковролин' },
+                { text: 'Пока не знаю, нужна консультация' }],
+            image: [{ path:'assets/content/1.png' }]
+        },{
+            id: '2',
+            multiple: false,
+            question: 'Для какого помещения вы выбираете напольное покрытие?',
+            variants: [{text: 'Квартира' }, { text: 'Дом'}, { text:'Коммерческое помещение(офис, магазин, ресторан, отель, и т.д.)' }],
+            image: [{path: 'assets/content/2.png' }]
+        },{
+            id: '3',
+            multiple: false,
+            question: 'У вас будет теплый пол?',
+            variants: [{text: 'Да' }, {text: 'Нет' }],
+            image: [{path: 'assets/content/3.png' }]
+        },{
+            id: '4',
+            multiple: false,
+            question: 'Какова площадь помещения, где будет укладываться покрытие?',
+            variants: [{ text:'До 20 м²' }, { text: '20–80 м²' }, {text: 'Более 80 м²' }, {text: 'Нужен точный расчет' } ],
+            image: [{path: 'assets/content/4.png' }]
+        },{
+            id: '5',
+            multiple: false,
+            question: 'Какой дизайн напольного покрытия вам ближе: ',
+            variants: [{ text:'Под дерево ', id: '1' }, { text:
+                        'Под елку', id: '2' }, { text:
+                        'Под камень/плитку', id: '3' }, { text:
+                        'Другое', id: '4' }, ],
+            image: [{ path:'assets/content/9.png', id: '1' }, { path:'assets/content/6.png', id: '2' }, { path:'assets/content/7.png', id: '3' }, { path:'assets/content/8.png', id: '4' }, ],
+        },
+
+    ]
+
+.kviz
+    .kviz__inner
+        .kviz__title!= 'Квиз<span> — займёт 1 минуту</span>'
+            button.kviz__close(type='button')
+        form.kviz__container(data-handler='path.php')
+            each item in content
+                .kviz__content(data-slide-id=item.id)
+                    .kviz__question-block
+                        .kviz__question= item.question
+                        .kviz__variants
+                            each answer in item.variants
+                                label.kviz__variants-item(data-image=answer.id)= answer.text
+                                    if item.multiple
+                                        input(type='checkbox', name=item.question)
+                                    else
+                                        input(type='radio', name=item.question)
+                    .kviz__image-block
+                        each img in item.image
+                            +img(require(img.path)).kviz__image(data-image-id=img.id)
+            .kviz__content.kviz__form
+                .kviz__question-block
+                    .kviz__form-title Спасибо за ответы!
+                    .kviz__form-text Оставьте свои контактные данные, и наш менеджер свяжется с вами в ближайшее время
+                    .kviz__form-data
+                        label.kviz__form-input Имя
+                            input(type='text', placeholder='Ваше имя', required)
+                        label.kviz__form-input Телефон
+                            input(type='tel', required)
+                .kviz__image-block
+                    +img(require('assets/content/2.png')).kviz__image
+            .kviz__buttons
+                button.kviz__submit(type='submit') Отправить
+                button.kviz__next(type='button')!= 'Далее <span class="kviz__slide">1/6</span>'
+                button.kviz__prev(type='button') Назад
+    +img(require('assets/static/thanks.png')).kviz-thanks

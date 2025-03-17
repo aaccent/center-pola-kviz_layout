@@ -1,1 +1,1 @@
-import '@/features/popup/popup'
+import 'components/kviz/kviz'
